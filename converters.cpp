@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 7819 $ $Date:: 2017-09-12 #$ $Author: serge $
+// $Revision: 7831 $ $Date:: 2017-09-13 #$ $Author: serge $
 
 #include "converters.h"     // self
 
@@ -95,6 +95,7 @@ Time & iterate( Time & time )
     time.y  = new_date.year();
     time.m  = new_date.month();
     time.d  = new_date.day();
+    time.weekday    = to_weekday( new_date.day_of_week() );
 
     return time;
 }
