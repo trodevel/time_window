@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 7822 $ $Date:: 2017-09-12 #$ $Author: serge $
+// $Revision: 7843 $ $Date:: 2017-09-14 #$ $Author: serge $
 
 #include "time_window_helper.h"     // self
 
@@ -38,52 +38,130 @@ enum class TimeWindowComp
     AFTER
 };
 
-TimeWindowComp compare( const persek_protocol::Weekdays & tw, const Time & time )
+bool operator==( const Time & time, const persek_protocol::Weekdays & tw )
 {
-    if( tw.mask & time.weekday )
-        return TimeWindowComp::FIT;
-
-    return TimeWindowComp::AFTER;
+    return tw.mask & time.weekday;
 }
 
-TimeWindowComp compare( const persek_protocol::TimePoint24 & tw, const Time & time )
+bool operator==( const Time & time, const persek_protocol::TimePoint24 & tw )
+{
+    if( time.hh != tw.hh )
+        return false;
+
+    if( time.mm != tw.mm )
+        return false;
+
+    return true;
+}
+
+bool operator<( const Time & time, const persek_protocol::TimePoint24 & tw )
 {
     if( time.hh < tw.hh )
-        return TimeWindowComp::BEFORE;
+        return true;
 
-    if( time.hh > tw.hh )
-        return TimeWindowComp::AFTER;
-
-    //if( time.hh == tw.hh )
+    if( time.hh == tw.hh )
     {
         if( time.mm < tw.mm )
-            return TimeWindowComp::BEFORE;
-        if( time.mm > tw.mm )
-            return TimeWindowComp::AFTER;
-
-        return TimeWindowComp::FIT;
+            return true;
     }
+
+    return false;
 }
 
-TimeWindowComp compare( const persek_protocol::TimeWindow & tw, const Time & time )
+bool operator>( const Time & time, const persek_protocol::TimePoint24 & tw )
 {
-    if( compare( tw.from, time ) == TimeWindowComp::BEFORE )
+    if( time.hh > tw.hh )
+        return true;
+
+    if( time.hh == tw.hh )
+    {
+        if( time.mm > tw.mm )
+            return true;
+    }
+
+    return false;
+}
+
+bool operator<=( const Time & time, const persek_protocol::TimePoint24 & tw )
+{
+    if( time.hh < tw.hh )
+        return true;
+
+    if( time.hh == tw.hh )
+    {
+        if( time.mm <= tw.mm )
+            return true;
+    }
+
+    return false;
+}
+
+bool operator>=( const Time & time, const persek_protocol::TimePoint24 & tw )
+{
+    if( time.hh > tw.hh )
+        return true;
+
+    if( time.hh == tw.hh )
+    {
+        if( time.mm >= tw.mm )
+            return true;
+    }
+
+    return false;
+}
+
+bool operator< ( const persek_protocol::TimePoint24 & lhs, const persek_protocol::TimePoint24 & rhs )
+{
+    if( lhs.hh < rhs.hh )
+        return true;
+
+    if( lhs.hh == rhs.hh )
+    {
+        if( lhs.mm < rhs.mm )
+            return true;
+    }
+
+    return false;
+}
+
+TimeWindowComp compare_norm( const persek_protocol::TimeWindow & tw, const Time & time )
+{
+    if( time < tw.from )
         return TimeWindowComp::BEFORE;
 
-    if( compare( tw.to, time ) == TimeWindowComp::AFTER )
+    if( time > tw.to )
         return TimeWindowComp::AFTER;
 
     return TimeWindowComp::FIT;
 }
 
-bool fit_in_time_window( const persek_protocol::TimeWindow & tw, const Time & time )
+TimeWindowComp compare_crossed( const persek_protocol::TimeWindow & tw, const Time & time )
 {
-    return compare( tw, time ) == TimeWindowComp::FIT;
+    if( time >= tw.from )
+        return TimeWindowComp::FIT;
+
+    if( time <= tw.to )
+        return TimeWindowComp::FIT;
+
+    return TimeWindowComp::BEFORE;
+}
+
+bool tw_is_crossed( const persek_protocol::TimeWindow & tw )
+{
+    return tw.to < tw.from;
+}
+
+TimeWindowComp compare( const persek_protocol::TimeWindow & tw, const Time & time, bool is_crossed )
+{
+    if( is_crossed )
+        return compare_crossed( tw, time );
+
+    return compare_norm( tw, time );
 }
 
 bool fit_in_weekdays( const persek_protocol::Weekdays & wd, const Time & time )
 {
-    return compare( wd, time ) == TimeWindowComp::FIT;
+    return time == wd;
 }
 
 Time get_next_fitting_date( const persek_protocol::Weekdays & wd, const Time & time )
@@ -98,15 +176,31 @@ Time get_next_fitting_date( const persek_protocol::Weekdays & wd, const Time & t
     return res;
 }
 
+void apply_next_day_window_from_time( Time * res, const persek_protocol::TimeWindow & tw, bool is_crossed )
+{
+    if( is_crossed )
+    {
+        res->hh  = 0;
+        res->mm  = 0;
+    }
+    else
+    {
+        res->hh  = tw.from.hh;
+        res->mm  = tw.from.mm;
+    }
+}
+
 Time get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek_protocol::Weekdays & wd, const Time & time )
 {
+    auto is_crossed = tw_is_crossed( tw );
+
     if( fit_in_weekdays( wd, time ) )
     {
-        if( compare( tw, time ) == TimeWindowComp::FIT )
+        if( compare( tw, time, is_crossed ) == TimeWindowComp::FIT )
         {
             return time;
         }
-        else if( compare( tw, time ) == TimeWindowComp::BEFORE )
+        else if( compare( tw, time, is_crossed ) == TimeWindowComp::BEFORE )
         {
             Time res = time;
 
@@ -120,8 +214,7 @@ Time get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek
 
     Time res = get_next_fitting_date( wd, time );
 
-    res.hh  = tw.from.hh;
-    res.mm  = tw.from.mm;
+    apply_next_day_window_from_time( & res, tw, is_crossed );
 
     return res;
 }
