@@ -10,6 +10,11 @@ std::string epoch_to_simple_string( uint32_t ts )
     return boost::posix_time::to_simple_string( from_epoch_sec( ts ) );
 }
 
+uint32_t to_epoch( const std::string & str )
+{
+    return to_epoch( boost::posix_time::time_from_string( str ) );
+}
+
 uint32_t get_next_fitting_time( const persek_protocol::TimeWindow & time_window, const persek_protocol::Weekdays & weekdays, uint32_t time )
 {
     std::cout << "test: time window [" <<  time_window << "], wd " << weekdays << ", time " << time << " (" << epoch_to_simple_string( time ) << ")\n";
@@ -153,8 +158,8 @@ void test( const persek_protocol::TimeWindow & time_window, const persek_protoco
 
 void test( const persek_protocol::TimeWindow & time_window, const persek_protocol::Weekdays & weekdays, const std::string & time_s, const std::string & expected_res_s )
 {
-    auto time           = to_epoch( boost::posix_time::time_from_string( time_s ) );
-    auto expected_time  = to_epoch( boost::posix_time::time_from_string( expected_res_s ) );
+    auto time           = to_epoch( time_s );
+    auto expected_time  = to_epoch( expected_res_s );
 
     test( time_window, weekdays, time, expected_time );
 }
@@ -164,7 +169,6 @@ int main()
     std::cout << "\n*********************************\n" << std::endl;
 
     std::string sun = "2017-09-10 10:00:00";    // Sun Sep 10 12:00:00 CEST 2017
-    std::string mon = "2017-09-11 10:00:00";    // Mon Sep 11 12:00:00 CEST 2017
 
     test( get_tw_whole_day(), get_wd_whole_week(),  sun, "2017-09-10 10:00:00" );
     test( get_tw_whole_day(), get_wd_work_week(),   sun, "2017-09-11 00:00:00" );
@@ -194,7 +198,42 @@ int main()
     test( get_tw_crossed_hours(), get_wd_work_week(),   sun, "2017-09-11 00:00:00" );
     test( get_tw_crossed_hours(), get_wd_work_week_2(), sun, "2017-09-11 00:00:00" );
     test( get_tw_crossed_hours(), get_wd_weekend(),     sun, "2017-09-10 17:00:00" );
-    test( get_tw_crossed_hours(), get_wd_some_days(),   sun, "2017-09-13 17:00:00" );
+    test( get_tw_crossed_hours(), get_wd_some_days(),   sun, "2017-09-13 00:00:00" );
+
+    std::cout << "\n*********************************\n" << std::endl;
+    std::cout << "\n*********************************\n" << std::endl;
+
+    std::string mon = "2017-09-11 10:00:00";    // Mon Sep 11 12:00:00 CEST 2017
+
+    test( get_tw_whole_day(), get_wd_whole_week(),  mon, "2017-09-11 10:00:00" );
+    test( get_tw_whole_day(), get_wd_work_week(),   mon, "2017-09-11 10:00:00" );
+    test( get_tw_whole_day(), get_wd_work_week_2(), mon, "2017-09-11 10:00:00" );
+    test( get_tw_whole_day(), get_wd_weekend(),     mon, "2017-09-16 00:00:00" );
+    test( get_tw_whole_day(), get_wd_some_days(),   mon, "2017-09-13 00:00:00" );
+
+    std::cout << "\n*********************************\n" << std::endl;
+
+    test( get_tw_day_hours(), get_wd_whole_week(),  mon, "2017-09-11 10:00:00" );
+    test( get_tw_day_hours(), get_wd_work_week(),   mon, "2017-09-11 10:00:00" );
+    test( get_tw_day_hours(), get_wd_work_week_2(), mon, "2017-09-11 10:00:00" );
+    test( get_tw_day_hours(), get_wd_weekend(),     mon, "2017-09-16 09:00:00" );
+    test( get_tw_day_hours(), get_wd_some_days(),   mon, "2017-09-13 09:00:00" );
+
+    std::cout << "\n*********************************\n" << std::endl;
+
+    test( get_tw_evening_hours(), get_wd_whole_week(),  mon, "2017-09-11 17:00:00" );
+    test( get_tw_evening_hours(), get_wd_work_week(),   mon, "2017-09-11 17:00:00" );
+    test( get_tw_evening_hours(), get_wd_work_week_2(), mon, "2017-09-11 17:00:00" );
+    test( get_tw_evening_hours(), get_wd_weekend(),     mon, "2017-09-16 17:00:00" );
+    test( get_tw_evening_hours(), get_wd_some_days(),   mon, "2017-09-13 17:00:00" );
+
+    std::cout << "\n*********************************\n" << std::endl;
+
+    test( get_tw_crossed_hours(), get_wd_whole_week(),  mon, "2017-09-11 17:00:00" );
+    test( get_tw_crossed_hours(), get_wd_work_week(),   mon, "2017-09-11 17:00:00" );
+    test( get_tw_crossed_hours(), get_wd_work_week_2(), mon, "2017-09-11 17:00:00" );
+    test( get_tw_crossed_hours(), get_wd_weekend(),     mon, "2017-09-16 00:00:00" );
+    test( get_tw_crossed_hours(), get_wd_some_days(),   mon, "2017-09-13 00:00:00" );
 
     return 0;
 }
