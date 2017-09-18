@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 7843 $ $Date:: 2017-09-14 #$ $Author: serge $
+// $Revision: 7852 $ $Date:: 2017-09-18 #$ $Author: serge $
 
 #include "time_window_helper.h"     // self
 
@@ -168,10 +168,10 @@ Time get_next_fitting_date( const persek_protocol::Weekdays & wd, const Time & t
 {
     Time res    = time;
 
-    while( fit_in_weekdays( wd, res ) == false )
+    do
     {
         iterate( res );
-    }
+    } while( fit_in_weekdays( wd, res ) == false );
 
     return res;
 }

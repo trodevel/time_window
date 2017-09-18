@@ -235,5 +235,12 @@ int main()
     test( get_tw_crossed_hours(), get_wd_weekend(),     mon, "2017-09-16 00:00:00" );
     test( get_tw_crossed_hours(), get_wd_some_days(),   mon, "2017-09-13 00:00:00" );
 
+    std::cout << "\n*********************************\n" << std::endl;
+    std::cout << "\n*********************************\n" << std::endl;
+
+    std::string sun2 = "2017-09-10 18:00:00";    // Sun Sep 10 12:00:00 CEST 2017
+
+    test( get_tw_day_hours(), get_wd_whole_week(),  sun2, "2017-09-11 09:00:00" );
+
     return 0;
 }
