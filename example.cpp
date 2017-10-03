@@ -3,16 +3,16 @@
 #include "time_window_helper.h"
 
 #include "persek_protocol/str_helper.h"     // persek_protocol::StrHelper
-#include "utils/boost_epoch.h"              // from_epoch_sec
+#include "utils/boost_epoch.h"              // utils::from_epoch_sec
 
 std::string epoch_to_simple_string( uint32_t ts )
 {
-    return boost::posix_time::to_simple_string( from_epoch_sec( ts ) );
+    return boost::posix_time::to_simple_string( utils::from_epoch_sec( ts ) );
 }
 
 uint32_t to_epoch( const std::string & str )
 {
-    return to_epoch( boost::posix_time::time_from_string( str ) );
+    return utils::to_epoch( boost::posix_time::time_from_string( str ) );
 }
 
 uint32_t get_next_fitting_time( const persek_protocol::TimeWindow & time_window, const persek_protocol::Weekdays & weekdays, uint32_t time )

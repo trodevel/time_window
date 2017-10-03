@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 7831 $ $Date:: 2017-09-13 #$ $Author: serge $
+// $Revision: 7955 $ $Date:: 2017-10-02 #$ $Author: serge $
 
 #include "converters.h"     // self
 
@@ -60,7 +60,7 @@ persek_protocol::Weekdays::weekdays_e to_weekday( const boost::gregorian::greg_w
 
 Time  to_intern_time( uint32_t time )
 {
-    auto ptime  = from_epoch_sec( time );
+    auto ptime  = utils::from_epoch_sec( time );
 
     Time res;
 
@@ -81,7 +81,7 @@ uint32_t to_epoch_time( const Time & time )
 {
     boost::posix_time::ptime ptime( boost::gregorian::date( time.y, time.m, time.d ), boost::posix_time::time_duration( time.hh, time.mm, time.ss ) );
 
-    return to_epoch( ptime );
+    return utils::to_epoch( ptime );
 }
 
 Time & iterate( Time & time )
