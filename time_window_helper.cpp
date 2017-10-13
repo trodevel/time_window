@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 7852 $ $Date:: 2017-09-18 #$ $Author: serge $
+// $Revision: 8018 $ $Date:: 2017-10-11 #$ $Author: serge $
 
 #include "time_window_helper.h"     // self
 
@@ -223,11 +223,20 @@ Time get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek
 
 uint32_t get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek_protocol::Weekdays & wd, uint32_t time )
 {
-    auto ptime  = tw::to_intern_time( time );
+    auto tm  = tw::to_intern_time( time );
 
-    auto res    = tw::get_next_fitting_time( tw, wd, ptime );
+    auto res    = tw::get_next_fitting_time( tw, wd, tm );
 
     return tw::to_epoch_time( res );
+}
+
+boost::posix_time::ptime get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek_protocol::Weekdays & wd, const boost::posix_time::ptime & time )
+{
+    auto tm  = tw::to_intern_time( time );
+
+    auto res    = tw::get_next_fitting_time( tw, wd, tm );
+
+    return tw::to_ptime( res );
 }
 
 } // namespace time_window

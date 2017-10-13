@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 7955 $ $Date:: 2017-10-02 #$ $Author: serge $
+// $Revision: 8018 $ $Date:: 2017-10-11 #$ $Author: serge $
 
 #include "converters.h"     // self
 
@@ -62,6 +62,11 @@ Time  to_intern_time( uint32_t time )
 {
     auto ptime  = utils::from_epoch_sec( time );
 
+    return to_intern_time( ptime );
+}
+
+Time  to_intern_time( const boost::posix_time::ptime & ptime )
+{
     Time res;
 
     init( & res,
@@ -79,9 +84,16 @@ Time  to_intern_time( uint32_t time )
 
 uint32_t to_epoch_time( const Time & time )
 {
-    boost::posix_time::ptime ptime( boost::gregorian::date( time.y, time.m, time.d ), boost::posix_time::time_duration( time.hh, time.mm, time.ss ) );
+    auto ptime = to_ptime( time );
 
     return utils::to_epoch( ptime );
+}
+
+boost::posix_time::ptime to_ptime( const Time & time )
+{
+    boost::posix_time::ptime ptime( boost::gregorian::date( time.y, time.m, time.d ), boost::posix_time::time_duration( time.hh, time.mm, time.ss ) );
+
+    return ptime;
 }
 
 Time & iterate( Time & time )
