@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8018 $ $Date:: 2017-10-11 #$ $Author: serge $
+// $Revision: 9081 $ $Date:: 2018-05-04 #$ $Author: serge $
 
 #include "converters.h"     // self
 
@@ -31,31 +31,31 @@ namespace time_window
 namespace tw
 {
 
-persek_protocol::Weekdays::weekdays_e to_weekday( const boost::gregorian::greg_weekday & gwd )
+basic_objects::Weekdays::weekdays_e to_weekday( const boost::gregorian::greg_weekday & gwd )
 {
     auto wd = gwd.as_enum();
 
     switch( wd )
     {
     case boost::gregorian::Monday:
-        return persek_protocol::Weekdays::weekdays_e::MO;
+        return basic_objects::Weekdays::weekdays_e::MO;
     case boost::gregorian::Tuesday:
-        return persek_protocol::Weekdays::weekdays_e::TU;
+        return basic_objects::Weekdays::weekdays_e::TU;
     case boost::gregorian::Wednesday:
-        return persek_protocol::Weekdays::weekdays_e::WE;
+        return basic_objects::Weekdays::weekdays_e::WE;
     case boost::gregorian::Thursday:
-        return persek_protocol::Weekdays::weekdays_e::TH;
+        return basic_objects::Weekdays::weekdays_e::TH;
     case boost::gregorian::Friday:
-        return persek_protocol::Weekdays::weekdays_e::FR;
+        return basic_objects::Weekdays::weekdays_e::FR;
     case boost::gregorian::Saturday:
-        return persek_protocol::Weekdays::weekdays_e::SA;
+        return basic_objects::Weekdays::weekdays_e::SA;
     case boost::gregorian::Sunday:
-        return persek_protocol::Weekdays::weekdays_e::SU;
+        return basic_objects::Weekdays::weekdays_e::SU;
     default:
         break;
     }
 
-    return persek_protocol::Weekdays::weekdays_e::MO;
+    return basic_objects::Weekdays::weekdays_e::MO;
 }
 
 Time  to_intern_time( uint32_t time )

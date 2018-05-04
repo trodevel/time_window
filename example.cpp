@@ -2,7 +2,7 @@
 
 #include "time_window_helper.h"
 
-#include "persek_protocol/str_helper.h"     // persek_protocol::StrHelper
+#include "basic_objects/str_helper.h"     // basic_objects::StrHelper
 #include "utils/boost_epoch.h"              // utils::from_epoch_sec
 
 std::string epoch_to_simple_string( uint32_t ts )
@@ -15,7 +15,7 @@ uint32_t to_epoch( const std::string & str )
     return utils::to_epoch( boost::posix_time::time_from_string( str ) );
 }
 
-uint32_t get_next_fitting_time( const persek_protocol::TimeWindow & time_window, const persek_protocol::Weekdays & weekdays, uint32_t time )
+uint32_t get_next_fitting_time( const basic_objects::TimeWindow & time_window, const basic_objects::Weekdays & weekdays, uint32_t time )
 {
     std::cout << "test: time window [" <<  time_window << "], wd " << weekdays << ", time " << time << " (" << epoch_to_simple_string( time ) << ")\n";
 
@@ -28,9 +28,9 @@ uint32_t get_next_fitting_time( const persek_protocol::TimeWindow & time_window,
     return corrected;
 }
 
-const persek_protocol::TimeWindow & get_tw_whole_day()
+const basic_objects::TimeWindow & get_tw_whole_day()
 {
-    static const persek_protocol::TimeWindow res =
+    static const basic_objects::TimeWindow res =
         {
                 { 0, 0 }, { 23, 59 }
         };
@@ -38,9 +38,9 @@ const persek_protocol::TimeWindow & get_tw_whole_day()
     return res;
 }
 
-const persek_protocol::TimeWindow & get_tw_day_hours()
+const basic_objects::TimeWindow & get_tw_day_hours()
 {
-    static const persek_protocol::TimeWindow res =
+    static const basic_objects::TimeWindow res =
         {
                 { 9, 0 }, { 17, 00 }
         };
@@ -48,9 +48,9 @@ const persek_protocol::TimeWindow & get_tw_day_hours()
     return res;
 }
 
-const persek_protocol::TimeWindow & get_tw_evening_hours()
+const basic_objects::TimeWindow & get_tw_evening_hours()
 {
-    static const persek_protocol::TimeWindow res =
+    static const basic_objects::TimeWindow res =
         {
                 { 17, 0 }, { 23, 30 }
         };
@@ -58,9 +58,9 @@ const persek_protocol::TimeWindow & get_tw_evening_hours()
     return res;
 }
 
-const persek_protocol::TimeWindow & get_tw_crossed_hours()
+const basic_objects::TimeWindow & get_tw_crossed_hours()
 {
-    static const persek_protocol::TimeWindow res =
+    static const basic_objects::TimeWindow res =
         {
                 { 17, 0 }, { 9, 0 }
         };
@@ -68,60 +68,60 @@ const persek_protocol::TimeWindow & get_tw_crossed_hours()
     return res;
 }
 
-const persek_protocol::Weekdays & get_wd_whole_week()
+const basic_objects::Weekdays & get_wd_whole_week()
 {
-    static const persek_protocol::Weekdays res =
+    static const basic_objects::Weekdays res =
         {
-            ( persek_protocol::Weekdays::weekdays_e::MO
-            + persek_protocol::Weekdays::weekdays_e::TU
-            + persek_protocol::Weekdays::weekdays_e::WE
-            + persek_protocol::Weekdays::weekdays_e::TH
-            + persek_protocol::Weekdays::weekdays_e::FR
-            + persek_protocol::Weekdays::weekdays_e::SA
-            + persek_protocol::Weekdays::weekdays_e::SU
+            ( basic_objects::Weekdays::weekdays_e::MO
+            + basic_objects::Weekdays::weekdays_e::TU
+            + basic_objects::Weekdays::weekdays_e::WE
+            + basic_objects::Weekdays::weekdays_e::TH
+            + basic_objects::Weekdays::weekdays_e::FR
+            + basic_objects::Weekdays::weekdays_e::SA
+            + basic_objects::Weekdays::weekdays_e::SU
             )
         };
 
     return res;
 }
 
-const persek_protocol::Weekdays & get_wd_work_week()
+const basic_objects::Weekdays & get_wd_work_week()
 {
-    static const persek_protocol::Weekdays res =
+    static const basic_objects::Weekdays res =
         {
-            ( persek_protocol::Weekdays::weekdays_e::MO
-            + persek_protocol::Weekdays::weekdays_e::TU
-            + persek_protocol::Weekdays::weekdays_e::WE
-            + persek_protocol::Weekdays::weekdays_e::TH
-            + persek_protocol::Weekdays::weekdays_e::FR
+            ( basic_objects::Weekdays::weekdays_e::MO
+            + basic_objects::Weekdays::weekdays_e::TU
+            + basic_objects::Weekdays::weekdays_e::WE
+            + basic_objects::Weekdays::weekdays_e::TH
+            + basic_objects::Weekdays::weekdays_e::FR
             )
         };
 
     return res;
 }
 
-const persek_protocol::Weekdays & get_wd_work_week_2()
+const basic_objects::Weekdays & get_wd_work_week_2()
 {
-    static const persek_protocol::Weekdays res =
+    static const basic_objects::Weekdays res =
         {
-            ( persek_protocol::Weekdays::weekdays_e::MO
-            + persek_protocol::Weekdays::weekdays_e::TU
-            + persek_protocol::Weekdays::weekdays_e::WE
-            + persek_protocol::Weekdays::weekdays_e::TH
-            + persek_protocol::Weekdays::weekdays_e::FR
-            + persek_protocol::Weekdays::weekdays_e::SA
+            ( basic_objects::Weekdays::weekdays_e::MO
+            + basic_objects::Weekdays::weekdays_e::TU
+            + basic_objects::Weekdays::weekdays_e::WE
+            + basic_objects::Weekdays::weekdays_e::TH
+            + basic_objects::Weekdays::weekdays_e::FR
+            + basic_objects::Weekdays::weekdays_e::SA
             )
         };
 
     return res;
 }
 
-const persek_protocol::Weekdays & get_wd_weekend()
+const basic_objects::Weekdays & get_wd_weekend()
 {
-    static const persek_protocol::Weekdays res =
+    static const basic_objects::Weekdays res =
         {
-            ( persek_protocol::Weekdays::weekdays_e::SA
-            + persek_protocol::Weekdays::weekdays_e::SU
+            ( basic_objects::Weekdays::weekdays_e::SA
+            + basic_objects::Weekdays::weekdays_e::SU
             )
         };
 
@@ -129,19 +129,19 @@ const persek_protocol::Weekdays & get_wd_weekend()
 }
 
 
-const persek_protocol::Weekdays & get_wd_some_days()
+const basic_objects::Weekdays & get_wd_some_days()
 {
-    static const persek_protocol::Weekdays res =
+    static const basic_objects::Weekdays res =
         {
-            ( persek_protocol::Weekdays::weekdays_e::WE
-            + persek_protocol::Weekdays::weekdays_e::FR
+            ( basic_objects::Weekdays::weekdays_e::WE
+            + basic_objects::Weekdays::weekdays_e::FR
             )
         };
 
     return res;
 }
 
-void test( const persek_protocol::TimeWindow & time_window, const persek_protocol::Weekdays & weekdays, uint32_t time, uint32_t expected_time )
+void test( const basic_objects::TimeWindow & time_window, const basic_objects::Weekdays & weekdays, uint32_t time, uint32_t expected_time )
 {
     auto res = get_next_fitting_time( time_window, weekdays, time );
 
@@ -156,7 +156,7 @@ void test( const persek_protocol::TimeWindow & time_window, const persek_protoco
 }
 
 
-void test( const persek_protocol::TimeWindow & time_window, const persek_protocol::Weekdays & weekdays, const std::string & time_s, const std::string & expected_res_s )
+void test( const basic_objects::TimeWindow & time_window, const basic_objects::Weekdays & weekdays, const std::string & time_s, const std::string & expected_res_s )
 {
     auto time           = to_epoch( time_s );
     auto expected_time  = to_epoch( expected_res_s );

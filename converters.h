@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8018 $ $Date:: 2017-10-11 #$ $Author: serge $
+// $Revision: 9081 $ $Date:: 2018-05-04 #$ $Author: serge $
 
 #ifndef TIME_WINDOW__CONVERTERS_H
 #define TIME_WINDOW__CONVERTERS_H
@@ -35,7 +35,7 @@ namespace time_window
 namespace tw
 {
 
-persek_protocol::Weekdays::weekdays_e to_weekday( const boost::gregorian::greg_weekday & gwd );
+basic_objects::Weekdays::weekdays_e to_weekday( const boost::gregorian::greg_weekday & gwd );
 
 Time  to_intern_time( uint32_t time );
 Time  to_intern_time( const boost::posix_time::ptime & time );

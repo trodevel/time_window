@@ -19,20 +19,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8018 $ $Date:: 2017-10-11 #$ $Author: serge $
+// $Revision: 9081 $ $Date:: 2018-05-04 #$ $Author: serge $
 
 #ifndef TIME_WINDOW__TIME_WINDOW_HELPER_H
 #define TIME_WINDOW__TIME_WINDOW_HELPER_H
 
-#include "persek_protocol/persek_protocol.h"    // TimeWindow
+#include "basic_objects/basic_objects.h"    // TimeWindow
 
 #include <boost/date_time/posix_time/posix_time_types.hpp>    // boost::posix_time::ptime, no i/o just types
 
 namespace time_window
 {
 
-uint32_t get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek_protocol::Weekdays & wd, uint32_t time );
-boost::posix_time::ptime get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek_protocol::Weekdays & wd, const boost::posix_time::ptime & time );
+uint32_t get_next_fitting_time( const basic_objects::TimeWindow & tw, const basic_objects::Weekdays & wd, uint32_t time );
+boost::posix_time::ptime get_next_fitting_time( const basic_objects::TimeWindow & tw, const basic_objects::Weekdays & wd, const boost::posix_time::ptime & time );
 
 
 } // namespace time_window

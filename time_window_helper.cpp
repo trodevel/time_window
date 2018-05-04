@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 8018 $ $Date:: 2017-10-11 #$ $Author: serge $
+// $Revision: 9081 $ $Date:: 2018-05-04 #$ $Author: serge $
 
 #include "time_window_helper.h"     // self
 
@@ -38,12 +38,12 @@ enum class TimeWindowComp
     AFTER
 };
 
-bool operator==( const Time & time, const persek_protocol::Weekdays & tw )
+bool operator==( const Time & time, const basic_objects::Weekdays & tw )
 {
     return tw.mask & time.weekday;
 }
 
-bool operator==( const Time & time, const persek_protocol::TimePoint24 & tw )
+bool operator==( const Time & time, const basic_objects::TimePoint24 & tw )
 {
     if( time.hh != tw.hh )
         return false;
@@ -54,7 +54,7 @@ bool operator==( const Time & time, const persek_protocol::TimePoint24 & tw )
     return true;
 }
 
-bool operator<( const Time & time, const persek_protocol::TimePoint24 & tw )
+bool operator<( const Time & time, const basic_objects::TimePoint24 & tw )
 {
     if( time.hh < tw.hh )
         return true;
@@ -68,7 +68,7 @@ bool operator<( const Time & time, const persek_protocol::TimePoint24 & tw )
     return false;
 }
 
-bool operator>( const Time & time, const persek_protocol::TimePoint24 & tw )
+bool operator>( const Time & time, const basic_objects::TimePoint24 & tw )
 {
     if( time.hh > tw.hh )
         return true;
@@ -82,7 +82,7 @@ bool operator>( const Time & time, const persek_protocol::TimePoint24 & tw )
     return false;
 }
 
-bool operator<=( const Time & time, const persek_protocol::TimePoint24 & tw )
+bool operator<=( const Time & time, const basic_objects::TimePoint24 & tw )
 {
     if( time.hh < tw.hh )
         return true;
@@ -96,7 +96,7 @@ bool operator<=( const Time & time, const persek_protocol::TimePoint24 & tw )
     return false;
 }
 
-bool operator>=( const Time & time, const persek_protocol::TimePoint24 & tw )
+bool operator>=( const Time & time, const basic_objects::TimePoint24 & tw )
 {
     if( time.hh > tw.hh )
         return true;
@@ -110,7 +110,7 @@ bool operator>=( const Time & time, const persek_protocol::TimePoint24 & tw )
     return false;
 }
 
-bool operator< ( const persek_protocol::TimePoint24 & lhs, const persek_protocol::TimePoint24 & rhs )
+bool operator< ( const basic_objects::TimePoint24 & lhs, const basic_objects::TimePoint24 & rhs )
 {
     if( lhs.hh < rhs.hh )
         return true;
@@ -124,7 +124,7 @@ bool operator< ( const persek_protocol::TimePoint24 & lhs, const persek_protocol
     return false;
 }
 
-TimeWindowComp compare_norm( const persek_protocol::TimeWindow & tw, const Time & time )
+TimeWindowComp compare_norm( const basic_objects::TimeWindow & tw, const Time & time )
 {
     if( time < tw.from )
         return TimeWindowComp::BEFORE;
@@ -135,7 +135,7 @@ TimeWindowComp compare_norm( const persek_protocol::TimeWindow & tw, const Time 
     return TimeWindowComp::FIT;
 }
 
-TimeWindowComp compare_crossed( const persek_protocol::TimeWindow & tw, const Time & time )
+TimeWindowComp compare_crossed( const basic_objects::TimeWindow & tw, const Time & time )
 {
     if( time >= tw.from )
         return TimeWindowComp::FIT;
@@ -146,12 +146,12 @@ TimeWindowComp compare_crossed( const persek_protocol::TimeWindow & tw, const Ti
     return TimeWindowComp::BEFORE;
 }
 
-bool tw_is_crossed( const persek_protocol::TimeWindow & tw )
+bool tw_is_crossed( const basic_objects::TimeWindow & tw )
 {
     return tw.to < tw.from;
 }
 
-TimeWindowComp compare( const persek_protocol::TimeWindow & tw, const Time & time, bool is_crossed )
+TimeWindowComp compare( const basic_objects::TimeWindow & tw, const Time & time, bool is_crossed )
 {
     if( is_crossed )
         return compare_crossed( tw, time );
@@ -159,12 +159,12 @@ TimeWindowComp compare( const persek_protocol::TimeWindow & tw, const Time & tim
     return compare_norm( tw, time );
 }
 
-bool fit_in_weekdays( const persek_protocol::Weekdays & wd, const Time & time )
+bool fit_in_weekdays( const basic_objects::Weekdays & wd, const Time & time )
 {
     return time == wd;
 }
 
-Time get_next_fitting_date( const persek_protocol::Weekdays & wd, const Time & time )
+Time get_next_fitting_date( const basic_objects::Weekdays & wd, const Time & time )
 {
     Time res    = time;
 
@@ -176,7 +176,7 @@ Time get_next_fitting_date( const persek_protocol::Weekdays & wd, const Time & t
     return res;
 }
 
-void apply_next_day_window_from_time( Time * res, const persek_protocol::TimeWindow & tw, bool is_crossed )
+void apply_next_day_window_from_time( Time * res, const basic_objects::TimeWindow & tw, bool is_crossed )
 {
     if( is_crossed )
     {
@@ -190,7 +190,7 @@ void apply_next_day_window_from_time( Time * res, const persek_protocol::TimeWin
     }
 }
 
-Time get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek_protocol::Weekdays & wd, const Time & time )
+Time get_next_fitting_time( const basic_objects::TimeWindow & tw, const basic_objects::Weekdays & wd, const Time & time )
 {
     auto is_crossed = tw_is_crossed( tw );
 
@@ -221,7 +221,7 @@ Time get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek
 
 } // namespace tw
 
-uint32_t get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek_protocol::Weekdays & wd, uint32_t time )
+uint32_t get_next_fitting_time( const basic_objects::TimeWindow & tw, const basic_objects::Weekdays & wd, uint32_t time )
 {
     auto tm  = tw::to_intern_time( time );
 
@@ -230,7 +230,7 @@ uint32_t get_next_fitting_time( const persek_protocol::TimeWindow & tw, const pe
     return tw::to_epoch_time( res );
 }
 
-boost::posix_time::ptime get_next_fitting_time( const persek_protocol::TimeWindow & tw, const persek_protocol::Weekdays & wd, const boost::posix_time::ptime & time )
+boost::posix_time::ptime get_next_fitting_time( const basic_objects::TimeWindow & tw, const basic_objects::Weekdays & wd, const boost::posix_time::ptime & time )
 {
     auto tm  = tw::to_intern_time( time );
 

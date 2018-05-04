@@ -19,12 +19,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 7818 $ $Date:: 2017-09-12 #$ $Author: serge $
+// $Revision: 9081 $ $Date:: 2018-05-04 #$ $Author: serge $
 
 #ifndef TIME_WINDOW__TIME_H
 #define TIME_WINDOW__TIME_H
 
-#include "persek_protocol/persek_protocol.h"    // persek_protocol::Weekdays
+#include "basic_objects/basic_objects.h"    // basic_objects::Weekdays
 
 namespace time_window
 {
@@ -38,7 +38,7 @@ struct Time
     uint32_t    m;
     uint32_t    d;
 
-    persek_protocol::Weekdays::weekdays_e   weekday;
+    basic_objects::Weekdays::weekdays_e   weekday;
 
     uint8_t     hh;
     uint8_t     mm;
@@ -52,7 +52,7 @@ void init(
         uint32_t    m,
         uint32_t    d,
 
-        persek_protocol::Weekdays::weekdays_e   weekday,
+        basic_objects::Weekdays::weekdays_e   weekday,
 
         uint8_t     hh,
         uint8_t     mm,
